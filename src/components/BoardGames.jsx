@@ -1,9 +1,13 @@
 import { useState } from "react";
 import supabase from "../utils/supabase";
+import "../App.css";
+import categories from "../categories"
 
 export default function BoardGames() {
   const [games, setGames] = useState([]);
-  const [selectedCategory, setSelectedCategory]=useState('All');
+  const [category, setCategory] = useState("Fantasy");
+
+
   // Fetch all games
   async function handleFetchGames() {
     console.log("Fetching games...");
@@ -15,14 +19,15 @@ export default function BoardGames() {
       setGames(data);
     }
   }
-const filteredGames =
-    selectedCategory === "All"
-      ? games
-      : games.filter((game) => game.game_category === selectedCategory);
 
-  const categories = ["All", "Strategy", "Family", "Party", "Card", "Word", "Trivia"];
+  console.log(categories)
+  async function handleFetchCategory() {
+    const { data, error } = await supabase.from("family_board_games").select("*",)
+    console.log("handleFetchCategory")
+    console.log(data)
+  }
 
-  const gamesDisplay = filteredGames.map((game) => (
+  const gamesDisplay = games.map((game) => (
     <li key={game.id}>
       <strong>{game.game_name}</strong> ({game.year_released})
       <br />
@@ -49,7 +54,6 @@ const filteredGames =
       year_released: parseInt(form.yearReleased.value),
       game_mechanics: form.gameMechanics.value,
       game_category: form.gameCategory.value,
-      game_designer: form.gameDesigner.value,
     };
 
     console.log("New Game:", newGame);
@@ -60,7 +64,6 @@ const filteredGames =
       console.error("Insert failed:", error);
     } else {
       console.log("Game added successfully:", data);
-
       handleFetchGames();
       event.target.reset();
     }
@@ -71,19 +74,7 @@ const filteredGames =
       <h1>Family Game Night Library</h1>
 
       <button onClick={handleFetchGames}>Show All Games</button>
-
-<div className="category-buttons">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            className={selectedCategory === cat ? "active" : ""}
-            onClick={() => setSelectedCategory(cat)}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
+      <button onClick={handleFetchCategory}>Category</button>
       <ul>{gamesDisplay}</ul>
 
       <h2>Add a New Game</h2>
@@ -132,17 +123,8 @@ const filteredGames =
         </label>
         <br />
 
-        <label>
-          Game Designer: <input type="text" name="gameDesigner" required />
-        </label>
-        <br />
-
         <button type="submit">Add Game</button>
       </form>
     </>
   );
 }
-
-
-
-
