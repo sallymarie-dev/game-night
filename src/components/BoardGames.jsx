@@ -15,8 +15,18 @@ export default function BoardGames() {
       setGames(data);
     }
   }
+const filteredGames =
+    selectedCategory === "All"
+      ? games
+      : games.filter((game) => game.game_category === selectedCategory);
 
-  const gamesDisplay = games.map((game) => (
+  const categories = ["All", "Strategy", "Family", "Party", "Card", "Word", "Trivia"];
+
+
+
+
+
+  const gamesDisplay = filterGedames.map((game) => (
     <li key={game.id}>
       <strong>{game.game_name}</strong> ({game.year_released})
       <br />
@@ -65,6 +75,18 @@ export default function BoardGames() {
       <h1>Family Game Night Library</h1>
 
       <button onClick={handleFetchGames}>Show All Games</button>
+
+<div className="category-buttons">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            className={selectedCategory === cat ? "active" : ""}
+            onClick={() => setSelectedCategory(cat)}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
 
       <ul>{gamesDisplay}</ul>
 
