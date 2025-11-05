@@ -3,7 +3,7 @@ import supabase from "../utils/supabase";
 
 export default function BoardGames() {
   const [games, setGames] = useState([]);
-
+  const [selectedCategory, setSelectedCategory]=useState('All');
   // Fetch all games
   async function handleFetchGames() {
     console.log("Fetching games...");
@@ -124,3 +124,7 @@ export default function BoardGames() {
     </>
   );
 }
+
+
+
+
