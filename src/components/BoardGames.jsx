@@ -22,11 +22,7 @@ const filteredGames =
 
   const categories = ["All", "Strategy", "Family", "Party", "Card", "Word", "Trivia"];
 
-
-
-
-
-  const gamesDisplay = filterGedames.map((game) => (
+  const gamesDisplay = filteredGames.map((game) => (
     <li key={game.id}>
       <strong>{game.game_name}</strong> ({game.year_released})
       <br />
