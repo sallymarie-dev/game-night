@@ -40,6 +40,13 @@ export default function BoardGames({ setPage }) {
     }
   }
 
+  // Aggregate games by category//
+  const aggregateByCategory = categories.map((cat) => {
+    const count = games.filter((game) => game.game_category === cat).length;
+    return { category: cat, count };
+  });
+
+ 
   const gamesDisplay = games.map((game) => (
     <li key={game.id}>
       <strong>{game.game_name}</strong> ({game.year_released})
@@ -106,19 +113,16 @@ export default function BoardGames({ setPage }) {
       ))}
 
       {selectedCategory && <p>Showing {selectedCategory} Games</p>}
+
+<h4>Games Count by Category:</h4>
       <ul>
-        {games.map((game) => (
-          <li key={game.id}>
-            <strong>{game.game_name}</strong> ({game.year_released})<br />
-            {game.minimum_players}–{game.maximum_players} players,{" "}
-            {game.game_time}
-            <br />
-            {game.game_mechanics}, {game.game_category}
-            <br />
-            Designed by {game.game_designer}
+        {aggregateByCategory.map(({ category, count }) => (
+          <li key={category}>
+            {category}: {count} game(s)
           </li>
         ))}
       </ul>
+      
       
       <ul>{gamesDisplay}</ul>
 
