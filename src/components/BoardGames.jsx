@@ -159,7 +159,9 @@ export default function BoardGames({ setPage }) {
         <br />
 
         <button type="submit">Add My Review</button>
+      <button onClick={handleFetchReviews}>Show All Reviews</button>
       </form>
+      
 
       <h2>Recent Reviews</h2>
       <ul>
