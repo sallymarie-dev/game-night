@@ -1,24 +1,33 @@
-import { useState } from "react";
-import supabase from "../utils/supabase";
 import "../App.css";
+import BoardGames from "./BoardGames";
+import App from "../App";
 
-export default function SplashPage(){
+export default function SplashPage({setPage}) {
 
+    const handleLogin =(login)=>{
+        login.preventDefault()
+        setPage("boardgames")
 
-
-
-
-
-return (
+        }
+  return (
     <>
-    <div>
+      <div>
         <h1>Welcome to Family Game Night</h1>
-        <form onSubmit={""}>
-            <label htmlFor=""></label>
+        <form onSubmit={handleLogin}>
+          <label>
+            Email: <input type="text" name="emailInput" />
+          </label>
+          <br />
+          <label>
+            Password: <input type="text" name="passwordInput" />
+          </label>
+          &nbsp;
+          <button type="submit">
+            {" "}
+            Login
+          </button>
         </form>
-    </div>
+      </div>
     </>
-)
+  );
 }
-
-
