@@ -21,6 +21,7 @@ export default function BoardGames({ setPage }) {
       console.log("Fetched data:", data);
       setGames(data);
       setSelectedCategory("");
+      handleFetchReviews(); //fetch reviews
     }
   }
   //our filtered list//
@@ -157,7 +158,7 @@ export default function BoardGames({ setPage }) {
         </label>
         <br />
 
-        <button type="submit">Add Game</button>
+        <button type="submit">Add My Review</button>
       </form>
 
       <h2>Recent Reviews</h2>
