@@ -23,7 +23,7 @@ export default function BoardGames({ setPage }) {
       setSelectedCategory("");
     }
   }
-//our filtered list//
+  //our filtered list//
   async function handleFetchByCategory(category) {
     console.log("Fetching games for:", category);
     setSelectedCategory(category);
@@ -31,7 +31,7 @@ export default function BoardGames({ setPage }) {
       .from("family_board_games")
       .select()
       .eq("game_category", category)
-      .limit(10);
+      .limit(30);
 
     if (error) {
       console.error("Fetch failed:", error);
@@ -46,7 +46,7 @@ export default function BoardGames({ setPage }) {
     return { category: cat, count };
   });
 
- 
+
   const gamesDisplay = games.map((game) => (
     <li key={game.id}>
       <strong>{game.game_name}</strong> ({game.year_released})
@@ -114,7 +114,7 @@ export default function BoardGames({ setPage }) {
 
       {selectedCategory && <p>Showing {selectedCategory} Games</p>}
 
-<h4>Games Count by Category:</h4>
+      <h4>Games Count by Category:</h4>
       <ul>
         {aggregateByCategory.map(({ category, count }) => (
           <li key={category}>
@@ -122,8 +122,8 @@ export default function BoardGames({ setPage }) {
           </li>
         ))}
       </ul>
-      
-      
+
+
       <ul>{gamesDisplay}</ul>
 
       <h2>Leave us a review </h2>
