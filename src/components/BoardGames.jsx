@@ -1,11 +1,12 @@
 import { useState } from "react";
 import supabase from "../utils/supabase";
 import "../App.css";
-import categories from "../categories"
+
 
 export default function BoardGames() {
   const [games, setGames] = useState([]);
-  const [category, setCategory] = useState("Fantasy");
+  const [reviews, setReviews]= useState([]);
+  // const [category, setCategory] = useState("Fantasy");
 
 
   // Fetch all games
@@ -20,12 +21,12 @@ export default function BoardGames() {
     }
   }
 
-  console.log(categories)
-  async function handleFetchCategory() {
-    const { data, error } = await supabase.from("family_board_games").select("*",)
-    console.log("handleFetchCategory")
-    console.log(data)
-  }
+  // console.log(categories)
+  // async function handleFetchCategory() {
+  //   const { data, error } = await supabase.from("family_board_games").select("*",)
+  //   console.log("handleFetchCategory")
+  //   console.log(data)
+  // }
 
   const gamesDisplay = games.map((game) => (
     <li key={game.id}>
@@ -39,31 +40,38 @@ export default function BoardGames() {
     </li>
   ));
 
+async function handleFetchReviews() {
+    console.log("Fetching reviews...");
+    const { data, error } = await supabase.from("user_review").select();
+    if (error) {
+      console.error("Review fetch failed:", error);
+    } else {
+      setReviews(data);
+    }
+  }
 
-  async function handleAddGame(event) {
+  async function handleReviewGame(event) {
     event.preventDefault();
-    console.log("Submitting new game...");
+    console.log("Submitting game review...");
 
     const form = event.target.elements;
 
-    const newGame = {
+    const reviewGame = {
+      user_name: form.userName.value,
       game_name: form.gameName.value,
-      minimum_players: parseInt(form.minPlayers.value),
-      maximum_players: parseInt(form.maxPlayers.value),
-      game_time: form.gameTime.value,
-      year_released: parseInt(form.yearReleased.value),
-      game_mechanics: form.gameMechanics.value,
+      review: form.review.value,
       game_category: form.gameCategory.value,
     };
 
-    console.log("New Game:", newGame);
+    console.log("Game review:", reviewGame);
 
-    const { data, error } = await supabase.from("family_board_games").insert(newGame);
+    const { data, error } = await supabase.from("user_review").insert(reviewGame).select();
 
     if (error) {
       console.error("Insert failed:", error);
     } else {
       console.log("Game added successfully:", data);
+      setReviews((prevReviews)=>[...prevReviews, ...data]);
       handleFetchGames();
       event.target.reset();
     }
@@ -72,40 +80,33 @@ export default function BoardGames() {
   return (
     <>
       <h1>Family Game Night Library</h1>
+      <h4>Lets find you a fun family game night game</h4>
 
       <button onClick={handleFetchGames}>Show All Games</button>
-      <button onClick={handleFetchCategory}>Category</button>
+      {/* <button onClick={handleFetchCategory}>Category</button> */}
       <ul>{gamesDisplay}</ul>
 
-      <h2>Add a New Game</h2>
-      <form onSubmit={handleAddGame}>
+
+
+
+
+
+
+
+      <h2>Leave us a review </h2>
+      <form onSubmit={handleReviewGame}>
+        <label>
+          Your Name: <input type="text" name="userName" required />
+        </label>
+        <br />
+
         <label>
           Game Name: <input type="text" name="gameName" required />
         </label>
         <br />
 
         <label>
-          Minimum Players: <input type="number" name="minPlayers" required />
-        </label>
-        <br />
-
-        <label>
-          Maximum Players: <input type="number" name="maxPlayers" required />
-        </label>
-        <br />
-
-        <label>
-          Game Time: <input type="text" name="gameTime" placeholder="e.g. 45 min" required />
-        </label>
-        <br />
-
-        <label>
-          Year Released: <input type="number" name="yearReleased" required />
-        </label>
-        <br />
-
-        <label>
-          Game Mechanics: <input type="text" name="gameMechanics" placeholder="e.g. Dice rolling" required />
+          Your Review: <input type="text" name="review" required />
         </label>
         <br />
 
@@ -125,6 +126,17 @@ export default function BoardGames() {
 
         <button type="submit">Add Game</button>
       </form>
+
+      <h2>Recent Reviews</h2>
+      <ul>
+        {reviews.map((r) => (
+          <li key={r.id}>
+            <strong>{r.user_name}</strong> on <em>{r.game_name}</em> ({r.game_category})
+            <br />
+            {r.review}
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
