@@ -3,7 +3,7 @@ import supabase from "../utils/supabase";
 import "../App.css";
 
 
-export default function BoardGames() {
+export default function BoardGames({setPage}) {
   const [games, setGames] = useState([]);
   const [reviews, setReviews]= useState([]);
   // const [category, setCategory] = useState("Fantasy");
@@ -82,16 +82,12 @@ async function handleFetchReviews() {
       <h1>Family Game Night Library</h1>
       <h4>Lets find you a fun family game night game</h4>
 
-      <button onClick={handleFetchGames}>Show All Games</button>
+      <button onClick={handleFetchGames}>Show All Games</button> 
+      <div>
+        <button onClick={()=>setPage("home")}>Back to Home Page</button>
+      </div>
       {/* <button onClick={handleFetchCategory}>Category</button> */}
       <ul>{gamesDisplay}</ul>
-
-
-
-
-
-
-
 
       <h2>Leave us a review </h2>
       <form onSubmit={handleReviewGame}>
