@@ -3,11 +3,13 @@ import supabase from "../utils/supabase";
 import "../App.css";
 
 
-export default function BoardGames({setPage}) {
+export default function BoardGames({ setPage }) {
   const [games, setGames] = useState([]);
-  const [reviews, setReviews]= useState([]);
-  // const [category, setCategory] = useState("Fantasy");
-
+  const [reviews, setReviews] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const categories = [
+    "Adventure", "Fighting", "Fantasy", "Card Game", "City Building", "Trivia",
+  ];
 
   // Fetch all games
   async function handleFetchGames() {
@@ -18,15 +20,25 @@ export default function BoardGames({setPage}) {
     } else {
       console.log("Fetched data:", data);
       setGames(data);
+      setSelectedCategory("");
     }
   }
+//our filtered list//
+  async function handleFetchByCategory(category) {
+    console.log("Fetching games for:", category);
+    setSelectedCategory(category);
+    const { data, error } = await supabase
+      .from("family_board_games")
+      .select()
+      .eq("game_category", category)
+      .limit(10);
 
-  // console.log(categories)
-  // async function handleFetchCategory() {
-  //   const { data, error } = await supabase.from("family_board_games").select("*",)
-  //   console.log("handleFetchCategory")
-  //   console.log(data)
-  // }
+    if (error) {
+      console.error("Fetch failed:", error);
+    } else {
+      setGames(data);
+    }
+  }
 
   const gamesDisplay = games.map((game) => (
     <li key={game.id}>
@@ -40,7 +52,7 @@ export default function BoardGames({setPage}) {
     </li>
   ));
 
-async function handleFetchReviews() {
+  async function handleFetchReviews() {
     console.log("Fetching reviews...");
     const { data, error } = await supabase.from("user_review").select();
     if (error) {
@@ -71,7 +83,7 @@ async function handleFetchReviews() {
       console.error("Insert failed:", error);
     } else {
       console.log("Game added successfully:", data);
-      setReviews((prevReviews)=>[...prevReviews, ...data]);
+      setReviews((prevReviews) => [...prevReviews, ...data]);
       handleFetchGames();
       event.target.reset();
     }
@@ -82,11 +94,32 @@ async function handleFetchReviews() {
       <h1>Family Game Night Library</h1>
       <h4>Lets find you a fun family game night game</h4>
 
-      <button onClick={handleFetchGames}>Show All Games</button> 
+      <button onClick={handleFetchGames}>Show All Games</button>
       <div>
-        <button onClick={()=>setPage("home")}>Back to Home Page</button>
+        <button onClick={() => setPage("home")}>Back to Home Page</button>
       </div>
-      {/* <button onClick={handleFetchCategory}>Category</button> */}
+      <h3>Choose your Favorite Category</h3>
+      {categories.map((cat) => (
+        <button key={cat} onClick={() => handleFetchByCategory(cat)}>
+          {cat}
+        </button>
+      ))}
+
+      {selectedCategory && <p>Showing {selectedCategory} Games</p>}
+      <ul>
+        {games.map((game) => (
+          <li key={game.id}>
+            <strong>{game.game_name}</strong> ({game.year_released})<br />
+            {game.minimum_players}–{game.maximum_players} players,{" "}
+            {game.game_time}
+            <br />
+            {game.game_mechanics}, {game.game_category}
+            <br />
+            Designed by {game.game_designer}
+          </li>
+        ))}
+      </ul>
+      
       <ul>{gamesDisplay}</ul>
 
       <h2>Leave us a review </h2>
@@ -110,11 +143,11 @@ async function handleFetchReviews() {
           Game Category:
           <select name="gameCategory" defaultValue="" required>
             <option value="" disabled>Select a category</option>
-            <option value="Strategy">Strategy</option>
-            <option value="Family">Family</option>
-            <option value="Party">Party</option>
-            <option value="Card">Card</option>
-            <option value="Word">Word</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Fighting">Fighting</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Card Game">Card Game</option>
+            <option value="City Building">City Building</option>
             <option value="Trivia">Trivia</option>
           </select>
         </label>
