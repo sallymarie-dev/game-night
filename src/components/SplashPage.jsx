@@ -1,6 +1,8 @@
 import "../App.css";
 import BoardGames from "./BoardGames";
 import App from "../App";
+import GameControllerImg from "../assets/GameController.png"
+
 
 export default function SplashPage({setPage}) {
 
@@ -28,7 +30,7 @@ export default function SplashPage({setPage}) {
           </button>
         </form>
         <div>
-            <img src="game-controller.png"/>
+        <img src={GameControllerImg} id="controller"/>
         </div>
       </div>
     </>

@@ -107,3 +107,8 @@ select:focus {
   outline: none;
   box-shadow: 0 0 10px #6a00f4;
 }
+
+.controller {
+    display: flex;
+    justify-content: center;
+}
