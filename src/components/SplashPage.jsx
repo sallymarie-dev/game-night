@@ -27,6 +27,9 @@ export default function SplashPage({setPage}) {
             Login
           </button>
         </form>
+        <div>
+            <img src="game-controller.png"/>
+        </div>
       </div>
     </>
   );
