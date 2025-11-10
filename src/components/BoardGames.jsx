@@ -46,6 +46,7 @@ export default function BoardGames({ setPage }) {
     const count = games.filter((game) => game.game_category === cat).length;
     return { category: cat, count };
   });
+  const totalGames = aggregateByCategory.reduce((sum, item) => sum + item.count, 0);
 
 
   const gamesDisplay = games.map((game) => (
@@ -123,7 +124,7 @@ export default function BoardGames({ setPage }) {
           </li>
         ))}
       </ul>
-
+      <p><strong>Total Games Available:</strong> {totalGames}</p>
 
       <ul>{gamesDisplay}</ul>
 
@@ -159,9 +160,9 @@ export default function BoardGames({ setPage }) {
         <br />
 
         <button type="submit">Add My Review</button>
-      <button onClick={handleFetchReviews}>Show All Reviews</button>
+        <button onClick={handleFetchReviews}>Show All Reviews</button>
       </form>
-      
+
 
       <h2>Recent Reviews</h2>
       <ul>
