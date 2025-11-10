@@ -3,6 +3,7 @@ import BoardGames from "./BoardGames";
 import App from "../App";
 import GameControllerImg from "../assets/GameController.png";
 import scrabbleImg from "../assets/scrabble.jpeg";
+import supabase from "../utils/supabase";
 
 export default function SplashPage({ setPage, setUserEmail }) {
   // const handleLogin =(login)=>{
@@ -16,20 +17,18 @@ export default function SplashPage({ setPage, setUserEmail }) {
     const password = event.target.elements.passwordInput.value;
 
     const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+      email: email,
+      password: password,
     });
 
-    if(error) {
-        alert("Login failed:" + error.message)
-    }
-    else {
-        setUserEmail(email)
-        setPage("boardgames")
+    if (error) {
+      alert("Login failed:" + error.message);
+    } else { (data.user)
+      setUserEmail(email);
+      setPage("boardgames");
     }
   };
 
-  
   return (
     <>
       <div>
