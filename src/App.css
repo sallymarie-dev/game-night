@@ -26,6 +26,10 @@ h2 {
   margin-top: 48px;
 }
 
+.home {
+  color: #ddd;
+}
+
 button {
   align-items: center;
   background: linear-gradient(90deg, #6a00f4, #b300ff);
@@ -109,6 +113,12 @@ select:focus {
 }
 
 .controller {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+}
+
+.scrabble {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

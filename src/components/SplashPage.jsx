@@ -2,6 +2,7 @@ import "../App.css";
 import BoardGames from "./BoardGames";
 import App from "../App";
 import GameControllerImg from "../assets/GameController.png"
+import scrabbleImg from "../assets/scrabble.jpeg"
 
 
 export default function SplashPage({setPage}) {
@@ -15,6 +16,10 @@ export default function SplashPage({setPage}) {
     <>
       <div>
         <h1>Welcome to Family Game Night</h1>
+        <div className="controller">
+        <img src={GameControllerImg} />
+        </div>
+        <h2 className="home">Login/Sign up below:</h2>
         <form onSubmit={handleLogin}>
           <label>
             Email: <input type="text" name="emailInput" />
@@ -29,10 +34,10 @@ export default function SplashPage({setPage}) {
             Login
           </button>
         </form>
-        <div>
-        <img src={GameControllerImg} id="controller"/>
-        </div>
       </div>
+        <div className="scrabble">
+        <img src={scrabbleImg} />
+        </div>
     </>
   );
 }
