@@ -53,7 +53,7 @@ export default function BoardGames({ setPage }) {
     <li key={game.id}>
       <strong>{game.game_name}</strong> ({game.year_released})
       <br />
-      {game.minimum_players}–{game.maximum_players} players, {game.game_time}
+      {game.minimum_players}–{game.maximum_players} players, Game Time: {game.game_time} mins
       <br />
       {game.game_mechanics}, {game.game_category}
       <br />
