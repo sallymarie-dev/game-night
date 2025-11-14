@@ -6,9 +6,10 @@ import scrabbleImg from "../assets/scrabble.jpeg";
 import supabase from "../utils/supabase";
 
 export default function SplashPage({ setPage, setUserEmail }) {
-  // const handleLogin =(login)=>{
-  //     login.preventDefault()
-  //     setPage("boardgames")
+  const handleLoginGuest = (login) => {
+    login.preventDefault();
+    setPage("boardgames");
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -23,9 +24,27 @@ export default function SplashPage({ setPage, setUserEmail }) {
 
     if (error) {
       alert("Login failed:" + error.message);
-    } else { (data.user)
+    } else {
+      data.user;
       setUserEmail(email);
       setPage("boardgames");
+    }
+  };
+
+  const handleSignup = async (event) => {
+    event.preventDefault();
+
+    const { emailInput, passwordInput } = event.target.elements;
+
+    const { error } = await supabase.auth.signUp({
+      email: emailInput.value,
+      password: passwordInput.value,
+    });
+
+    if (error) {
+      alert("Signup failed: " + error.message);
+    } else {
+      alert("Check your email for a verification link!");
     }
   };
 
@@ -43,10 +62,33 @@ export default function SplashPage({ setPage, setUserEmail }) {
           </label>
           <br />
           <label>
-            Password: <input type="text" name="passwordInput" />
+            Password: <input type="password" name="passwordInput" />
           </label>
           &nbsp;
           <button type="submit"> Login</button>
+          &nbsp;
+          <button onClick={handleLoginGuest} type="submit">
+            Login as guest
+          </button>
+        </form>
+      </div>
+
+      <h2 className="home">No Account? Sign Up Below:</h2>
+      <div>
+        <form onSubmit={handleSignup}>
+          <input
+            type="email"
+            name="emailInput"
+            placeholder="Enter your email"
+            required
+          />
+          <input
+            type="password"
+            name="passwordInput"
+            placeholder="Enter your password"
+            required
+          />
+          <button type="submit">Create Account</button>
         </form>
       </div>
       <div className="scrabble">
