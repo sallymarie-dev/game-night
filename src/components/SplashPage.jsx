@@ -7,8 +7,8 @@ import supabase from "../utils/supabase";
 
 export default function SplashPage({ setPage, setUserEmail }) {
   // const handleLogin =(login)=>{
-  //     login.preventDefault()
-  //     setPage("boardgames")
+  //     login.preventDefault()      
+  //     setPage("boardgamgites")
 
   const handleLogin = async (event) => {
     event.preventDefault();
